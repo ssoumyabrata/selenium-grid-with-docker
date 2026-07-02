@@ -1,0 +1,74 @@
+# To execute this docker compose yml file use `docker compose -f docker-compose-v3.yml up`
+# Add the `-d` flag at the end for detached execution
+# To stop the execution, hit Ctrl+C, and then `docker compose -f docker-compose-v3.yml down`
+services:
+  chrome:
+    image: selenium/node-chrome:4.37.0
+    platform: linux/amd64
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+    # healthcheck:
+    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
+    #   interval: 5s
+    #   timeout: 10s
+    #   retries: 10
+    #   start_period: 15s
+
+  edge:
+    image: selenium/node-edge:4.37.0
+    platform: linux/amd64
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+    # healthcheck:
+    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
+    #   interval: 5s
+    #   timeout: 10s
+    #   retries: 10
+    #   start_period: 15s
+
+  firefox:
+    image: selenium/node-firefox:4.37.0
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+    # healthcheck:
+    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
+    #   interval: 5s
+    #   timeout: 10s
+    #   retries: 10
+    #   start_period: 15s
+
+  selenium-hub:
+    image: selenium/hub:4.37.0
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  automation:
+    build: .
+    container_name: selenium-tests
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+      # chrome:
+      #   condition: service_healthy
+      # edge:
+      #   condition: service_healthy
+      # firefox:
+      #   condition: service_healthy

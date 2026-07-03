@@ -9,13 +9,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.selenium.tests.util.ScreenshotUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Selenium test class for Docker Chrome container
  */
+@Listeners({com.selenium.tests.listener.AllureListener.class})
 public class DockerChromeTest {
     private static final Logger logger = LoggerFactory.getLogger(DockerChromeTest.class);
     private WebDriver driver;
@@ -58,6 +63,7 @@ public class DockerChromeTest {
             // Navigate to Google
             driver.navigate().to("https://www.google.com");
             logger.info("Navigated to Google.com");
+            ScreenshotUtil.takeScreenshot(driver, "01");
 
             // Verify page title
             String title = driver.getTitle();
@@ -67,12 +73,14 @@ public class DockerChromeTest {
             // Find search box and search
             var searchBox = driver.findElement(By.name("q"));
             searchBox.sendKeys("Selenium WebDriver");
+            ScreenshotUtil.takeScreenshot(driver, "02");
             searchBox.submit();
             logger.info("Performed search for 'Selenium WebDriver'");
 
             // Wait and verify results
             Thread.sleep(2000);
             String resultPageTitle = driver.getTitle();
+            ScreenshotUtil.takeScreenshot(driver, "03");
             logger.info("Result page title: " + resultPageTitle);
             assert resultPageTitle.contains("Selenium WebDriver") : "Results should contain 'Selenium WebDriver'";
 

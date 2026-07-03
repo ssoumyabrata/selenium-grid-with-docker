@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Selenium Basic Test Suite">
+<suite name="Selenium Basic Test Suite" parallel="classes" thread-count="2">
+    <listeners>
+    <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    <listener class-name="com.selenium.tests.listener.AllureListener"/>
+</listeners>
     <test name="Grid Browser Tests with Docker">
         <classes>
-            <!-- <class name="com.selenium.tests.DockerChromeTest"/> -->
-             <class name="com.selenium.tests.DockerEdgeTest"/>
-           <!-- <class name="com.selenium.tests.DockerFirefoxTest"/> -->
+            <class name="com.selenium.tests.DockerChromeTest"/> 
+            <class name="com.selenium.tests.DockerEdgeTest"/>
         </classes>
     </test>
 </suite>

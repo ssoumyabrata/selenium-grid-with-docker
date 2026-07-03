@@ -10,12 +10,7 @@ services:
       - selenium-hub
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
-    # healthcheck:
-    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 10
-    #   start_period: 15s
+
 
   edge:
     image: selenium/node-edge:4.37.0
@@ -25,26 +20,16 @@ services:
       - selenium-hub
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
-    # healthcheck:
-    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 10
-    #   start_period: 15s
 
-  firefox:
-    image: selenium/node-firefox:4.37.0
-    shm_size: 2gb
-    depends_on:
-      - selenium-hub
-    environment:
-      - SE_EVENT_BUS_HOST=selenium-hub
-    # healthcheck:
-    #   test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/localhost/4444"]
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 10
-    #   start_period: 15s
+
+  # firefox:
+  #   image: selenium/node-firefox:4.37.0
+  #   shm_size: 2gb
+  #   depends_on:
+  #     - selenium-hub
+  #   environment:
+  #     - SE_EVENT_BUS_HOST=selenium-hub
+
 
   selenium-hub:
     image: selenium/hub:4.37.0
@@ -66,9 +51,5 @@ services:
     depends_on:
       selenium-hub:
         condition: service_healthy
-      # chrome:
-      #   condition: service_healthy
-      # edge:
-      #   condition: service_healthy
-      # firefox:
-      #   condition: service_healthy
+    volumes:
+      - ./target:/app/target

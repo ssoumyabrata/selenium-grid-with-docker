@@ -11,13 +11,18 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import com.selenium.tests.util.ScreenshotUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Selenium test class for Docker Edge container
  */
+@Listeners({com.selenium.tests.listener.AllureListener.class})
 public class DockerEdgeTest {
     private static final Logger logger = LoggerFactory.getLogger(DockerEdgeTest.class);
     private WebDriver driver;
@@ -57,10 +62,11 @@ public class DockerEdgeTest {
         try {
             logger.info("Starting Google search test on Docker Edge");
             // driver = DriverManager.getDriver();
-            Thread.sleep(12000);
+
             // Navigate to Google
             driver.navigate().to("https://www.google.com");
             logger.info("Navigated to Google.com");
+            ScreenshotUtil.takeScreenshot(driver, "02_search_entered");
 
             // Verify page title
             String title = driver.getTitle();
@@ -70,11 +76,14 @@ public class DockerEdgeTest {
             // Find search box and search
             var searchBox = driver.findElement(By.name("q"));
             searchBox.sendKeys("Selenium WebDriver");
+            ScreenshotUtil.takeScreenshot(driver, "02_search_entered");
             searchBox.submit();
+            ScreenshotUtil.takeScreenshot(driver, "03_search_results");
             logger.info("Performed search for 'Selenium WebDriver'");
 
             // Wait and verify results
             Thread.sleep(2000);
+
             String resultPageTitle = driver.getTitle();
             logger.info("Result page title: " + resultPageTitle);
             assert resultPageTitle.contains("Selenium WebDriver") : "Results should contain 'Selenium WebDriver'";

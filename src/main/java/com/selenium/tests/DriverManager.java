@@ -1,5 +1,6 @@
 package com.selenium.tests;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,6 @@ public class DriverManager {
 
             switch (browser.toLowerCase()) {
                 case "edge":
-                    WebDriverManager.edgedriver().setup();
                     EdgeOptions edgeOptions = new EdgeOptions();
                     Map<String, Object> edgePrefs = new HashMap<>();
                     edgePrefs.put("credentials_enable_service", false);
@@ -65,7 +64,6 @@ public class DriverManager {
                     logger.info("Local Edge WebDriver initialized");
                     break;
                 default:
-                    WebDriverManager.chromedriver().setup();
 
                     ChromeOptions options = new ChromeOptions();
 

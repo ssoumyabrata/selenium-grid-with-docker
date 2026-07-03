@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>Selenium Basic Tests</name>
-    <description>Basic Selenium WebDriver tests for Chrome browser</description>
+    <description>Basic Selenium WebDriver tests for Chrome/Edge browser with Local or Docker/Kubernetes</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -88,7 +88,7 @@
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-parallel.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>

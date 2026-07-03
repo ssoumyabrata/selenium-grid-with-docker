@@ -10,9 +10,10 @@ import java.lang.reflect.Method;
 
 import com.selenium.tests.util.ScreenshotUtil;
 
+import io.qameta.allure.Allure;
+
 public class BaseTest {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-
 
     @BeforeMethod(alwaysRun = true)
     public void setUp(Method method, ITestContext context) {
@@ -44,10 +45,12 @@ public class BaseTest {
     }
 
     protected void step(String name) {
-        WebDriver d = getDriver();
-        if (d != null) {
-            ScreenshotUtil.takeScreenshot(d, name);
-        }
-        logger.info("STEP: {}", name);
+        Allure.step(name, () -> {
+            WebDriver d = getDriver();
+            if (d != null) {
+                ScreenshotUtil.takeScreenshot(d, name);
+            }
+            logger.info("STEP: {}", name);
+        });
     }
 }

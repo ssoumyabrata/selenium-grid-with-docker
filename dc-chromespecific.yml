@@ -23,3 +23,8 @@ services:
         condition: service_healthy
     environment:
       - CHROME_HOST=chrome
+    volumes:
+      - ./target/allure-results:/app/target/allure-results
+      - ./target/allure-report:/app/target/allure-report
+      - ./target/screenshots:/app/target/screenshots
+      - ./logs:/app/logs

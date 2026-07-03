@@ -1,6 +1,5 @@
-# To execute this docker compose yml file use `docker compose -f docker-compose-v3.yml up`
+# To execute this docker compose yml file use `docker compose -f dc-hub.yml up`
 # Add the `-d` flag at the end for detached execution
-# To stop the execution, hit Ctrl+C, and then `docker compose -f docker-compose-v3.yml down`
 services:
   chrome:
     image: selenium/node-chrome:4.37.0
@@ -20,16 +19,6 @@ services:
       - selenium-hub
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
-
-
-  # firefox:
-  #   image: selenium/node-firefox:4.37.0
-  #   shm_size: 2gb
-  #   depends_on:
-  #     - selenium-hub
-  #   environment:
-  #     - SE_EVENT_BUS_HOST=selenium-hub
-
 
   selenium-hub:
     image: selenium/hub:4.37.0
@@ -52,4 +41,7 @@ services:
       selenium-hub:
         condition: service_healthy
     volumes:
-      - ./target:/app/target
+      - ./target/allure-results:/app/target/allure-results
+      - ./target/allure-report:/app/target/allure-report
+      - ./target/screenshots:/app/target/screenshots
+      - ./logs:/app/logs

@@ -48,27 +48,44 @@ public class DriverManager {
                 case "edge":
                     WebDriverManager.edgedriver().setup();
                     EdgeOptions edgeOptions = new EdgeOptions();
-                    edgeOptions.addArguments("--disable-blink-features=AutomationControlled");
-                    edgeOptions.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
-                    edgeOptions.setExperimentalOption("useAutomationExtension", false);
+                    Map<String, Object> edgePrefs = new HashMap<>();
+                    edgePrefs.put("credentials_enable_service", false);
+                    edgePrefs.put("profile.password_manager_enabled", false);
+                    // Stops the "Change your password" popup
+                    edgePrefs.put("profile.password_manager_leak_detection", false);
+                    edgeOptions.setExperimentalOption("prefs", edgePrefs);
+
+                    // Useful options
+                    edgeOptions.addArguments("--start-maximized");
+                    edgeOptions.addArguments("--disable-notifications");
                     edgeOptions.addArguments("--disable-dev-shm-usage");
                     edgeOptions.addArguments("--no-sandbox");
-                    edgeOptions.addArguments("--window-size=1920,1080");
+
                     DRIVER.set(new EdgeDriver(edgeOptions));
                     logger.info("Local Edge WebDriver initialized");
                     break;
                 default:
                     WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
-                    chromeOptions.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
-                    chromeOptions.setExperimentalOption("useAutomationExtension", false);
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
-                    chromeOptions.addArguments("--no-sandbox");
-                    chromeOptions.addArguments("--window-size=1920,1080");
-                    DRIVER.set(new ChromeDriver(chromeOptions));
-                    logger.info("Local Chrome WebDriver initialized");
 
+                    ChromeOptions options = new ChromeOptions();
+
+                    // Disable password manager
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("credentials_enable_service", false);
+                    prefs.put("profile.password_manager_enabled", false);
+                    // STOPS pop up to change password
+                    prefs.put("profile.password_manager_leak_detection", false);
+
+                    options.setExperimentalOption("prefs", prefs);
+
+                    // Other useful options
+                    options.addArguments("--start-maximized");
+                    options.addArguments("--disable-notifications");
+                    options.addArguments("--disable-dev-shm-usage");
+                    options.addArguments("--no-sandbox");
+
+                    DRIVER.set(new ChromeDriver(options));
+                    logger.info("Local Chrome WebDriver initialized");
                     break;
             }
         } catch (Exception e) {
@@ -90,22 +107,35 @@ public class DriverManager {
 
             if (browser.equalsIgnoreCase("edge")) {
                 EdgeOptions edgeOptions = new EdgeOptions();
-                edgeOptions.addArguments("--disable-blink-features=AutomationControlled");
-                edgeOptions.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
-                edgeOptions.setExperimentalOption("useAutomationExtension", false);
+                Map<String, Object> edgePrefs = new HashMap<>();
+                edgePrefs.put("credentials_enable_service", false);
+                edgePrefs.put("profile.password_manager_enabled", false);
+                // Stops the "Change your password" popup
+                edgePrefs.put("profile.password_manager_leak_detection", false);
+                edgeOptions.setExperimentalOption("prefs", edgePrefs);
+
+                // Useful options for Docker/Grid
                 edgeOptions.addArguments("--disable-dev-shm-usage");
                 edgeOptions.addArguments("--no-sandbox");
+                edgeOptions.addArguments("--disable-notifications");
                 edgeOptions.addArguments("--window-size=1920,1080");
                 DRIVER.set(new RemoteWebDriver(new URL(remoteUrl), edgeOptions));
                 logger.info("Remote Edge WebDriver initialized: " + remoteUrl);
             } else {
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
-                chromeOptions.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
-                chromeOptions.setExperimentalOption("useAutomationExtension", false);
+                Map<String, Object> chromePrefs = new HashMap<>();
+                chromePrefs.put("credentials_enable_service", false);
+                chromePrefs.put("profile.password_manager_enabled", false);
+                // Stops the "Change your password" popup
+                chromePrefs.put("profile.password_manager_leak_detection", false);
+                chromeOptions.setExperimentalOption("prefs", chromePrefs);
+
+                // Useful options for Docker/Grid
                 chromeOptions.addArguments("--disable-dev-shm-usage");
                 chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--window-size=1920,1080");
+
                 DRIVER.set(new RemoteWebDriver(new URL(remoteUrl), chromeOptions));
                 logger.info("Remote Chrome WebDriver initialized: " + remoteUrl);
             }

@@ -42,12 +42,16 @@ jobs:
         if: always()
         run: sudo chmod -R 777 target
 
+      - name: Install Allure
+        run: |
+          ALLURE_VERSION=2.44.0
+          wget https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz
+          tar -xzf allure-${ALLURE_VERSION}.tgz
+          sudo mv allure-${ALLURE_VERSION} /opt/allure
+          echo "/opt/allure/bin" >> $GITHUB_PATH
+
       - name: Generate Allure Report
-        if: always()
-        uses: simple-elf/allure-report-action@v1.9
-        with:
-          allure_results: target/allure-results
-          allure_report: target/allure-report
+        run: allure generate target/allure-results -o target/allure-report --clean
 
       - name: Upload Github Pages Artifact
         if: always()

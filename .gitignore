@@ -4,5 +4,3 @@
 logs/
 
 target/*
-!target/allure-results/
-!target/allure-results/**

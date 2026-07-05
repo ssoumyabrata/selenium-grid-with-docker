@@ -9,7 +9,8 @@ services:
       - selenium-hub
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
-
+    deploy:
+      replicas: 2
 
   edge:
     image: selenium/node-edge:4.37.0

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Selenium Parallel Suite" parallel="tests" thread-count="2">
+<suite name="Selenium Parallel Suite" parallel="tests">
     <listeners>
         <listener class-name="com.selenium.tests.listener.AllureListener"/>
     </listeners>
 
-    <test name="Chrome Tests">
+    <test name="Chrome Tests" parallel="classes" thread-count="2">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.selenium.tests.SauceLoginTest"/>
@@ -13,7 +13,7 @@
         </classes>
     </test>
 
-    <test name="Edge Tests">
+    <test name="Edge Tests" parallel="classes" thread-count="1">
         <parameter name="browser" value="edge"/>
         <classes>
             <class name="com.selenium.tests.SauceLoginTest"/>

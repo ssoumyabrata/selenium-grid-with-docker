@@ -37,7 +37,18 @@ jobs:
       
       - name: Start services and run tests
         run: docker compose -f dc-hub.yml up --abort-on-container-exit
-      
+
+      - name: Fix File Permissions
+        if: always()
+        run: sudo chmod -R 777 target
+              
+      - name: Install Allure
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.34.1.tgz
+          tar -zxvf allure-2.34.1.tgz
+          sudo mv allure-2.34.1 /opt/allure
+          echo "/opt/allure/bin" >> $GITHUB_PATH
+
       - name: Generate Allure Report
         if: always()
         run: |
